@@ -1,0 +1,59 @@
+import requests
+from bs4 import BeautifulSoup
+import re
+import csv
+
+
+url1 = "https://en.m.wikipedia.org/wiki/List_of_Internet_top-level_domains"
+r = requests.get(url1)
+
+soup = BeautifulSoup(r.content, 'html.parser')
+print(soup.prettify())
+
+domains = []
+for url in soup.find_all(valign="top"):
+    #print(url)
+    link = url.find_all('a')
+    #print(link)
+    for rel in link:
+        s = str(rel)
+        m = re.findall(r"(?!\.php|\.com)\.\w{2,40}", s)
+        if m:
+            domains.append("https://www.example"+(m[0])) 
+
+domains.append("https://www.example.com")
+print(domains)
+
+
+result = []
+for d in domains:
+    try:
+        req = requests.get(d)
+    except requests.exceptions.RequestException as err:
+        err = str(err)
+        status.append(d+" "+err)
+        
+        
+    except requests.exceptions.HTTPError as err1:
+        err1 = str(err1)
+        status.append(d+" "+err1)
+        
+    except requests.exceptions.ConnectionError as err2:
+        err2 = str(err2)
+        status.append(d+" "+err2)
+        
+    except requests.exceptions.Timeout as err3:
+        err3 = str(err3)
+        status.append(d+" "+err3)
+        
+    if(req.status_code == 200):
+        status.append(d+" Valid link")
+        
+    else:
+        status.append(d+" Invalid link")
+        
+        
+with open ("~/Desktop/web_mining.csv",'w+') as csvfile:
+      csvwriter = csv.writer(csvfile,delimiter=',')
+for item in result:
+      csvwriter.writerow(item)
