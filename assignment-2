@@ -31,26 +31,26 @@ for d in domains:
         req = requests.get(d)
     except requests.exceptions.RequestException as err:
         err = str(err)
-        status.append(d+" "+err)
+        result.append(d+" "+err)
         
         
     except requests.exceptions.HTTPError as err1:
         err1 = str(err1)
-        status.append(d+" "+err1)
+        result.append(d+" "+err1)
         
     except requests.exceptions.ConnectionError as err2:
         err2 = str(err2)
-        status.append(d+" "+err2)
+        result.append(d+" "+err2)
         
     except requests.exceptions.Timeout as err3:
         err3 = str(err3)
-        status.append(d+" "+err3)
+        result.append(d+" "+err3)
         
     if(req.status_code == 200):
-        status.append(d+" Valid link")
+        result.append(d+" Valid link")
         
     else:
-        status.append(d+" Invalid link")
+        result.append(d+" Invalid link")
         
         
 with open ("~/Desktop/web_mining.csv",'w+') as csvfile:
