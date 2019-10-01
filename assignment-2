@@ -55,5 +55,5 @@ for d in domains:
         
 with open ("~/Desktop/web_mining.csv",'w+') as csvfile:
       csvwriter = csv.writer(csvfile,delimiter=',')
-for item in result:
-      csvwriter.writerow(item)
+      for item in result:
+        csvwriter.writerow([item])
